@@ -10,32 +10,34 @@
  * **********************************************************************************/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+namespace Irony.Parsing {
 
-namespace Irony.Parsing { 
+    // GrammarData is a container for all basic info about the grammar
+    // GrammarData is a field in LanguageData object. 
+    public sealed class GrammarData {
 
-  //GrammarData is a container for all basic info about the grammar
-  // GrammarData is a field in LanguageData object. 
-  public class GrammarData {
-    public readonly LanguageData Language; 
-    public readonly Grammar Grammar;
-    public NonTerminal AugmentedRoot;
-    public NonTerminalSet AugmentedSnippetRoots = new NonTerminalSet(); 
-    public readonly BnfTermSet AllTerms = new BnfTermSet();
-    public readonly TerminalSet Terminals = new TerminalSet();
-    public readonly NonTerminalSet NonTerminals = new NonTerminalSet();
-    public TerminalSet NoPrefixTerminals = new TerminalSet(); //Terminals that have no limited set of prefixes
+        public GrammarData(LanguageData language) {
+            Language = language;
+            Grammar = language.Grammar;
+        }
 
-    public GrammarData(LanguageData language) {
-      Language = language;
-      Grammar = language.Grammar;
+        public LanguageData Language { get; }
+
+        public Grammar Grammar { get; }
+
+        public NonTerminal AugmentedRoot { get; internal set; }
+
+        public NonTerminalSet AugmentedSnippetRoots { get; } = new NonTerminalSet();
+
+        public BnfTermSet AllTerms { get; } = new BnfTermSet();
+
+        public TerminalSet Terminals { get; } = new TerminalSet();
+
+        public NonTerminalSet NonTerminals { get; } = new NonTerminalSet();
+
+        // Terminals that have no limited set of prefixes.
+        public TerminalSet NoPrefixTerminals { get; } = new TerminalSet();
+
     }
 
-  }//class
-
-
-
-}//namespace
+}

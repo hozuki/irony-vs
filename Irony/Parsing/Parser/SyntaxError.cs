@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* **********************************************************************************
  * Copyright (c) Roman Ivantsov
  * This source code is subject to terms and conditions of the MIT License
@@ -11,32 +11,39 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Irony.Parsing { 
+namespace Irony.Parsing {
 
-  //Container for syntax error
-  public class SyntaxError {
-    public SyntaxError(SourceLocation location, string message, ParserState parserState) {
-      Location = location;
-      Message = message;
-      ParserState = parserState;
+    //Container for syntax error
+    public sealed class SyntaxError : IComparable<SyntaxError> {
+
+        public SyntaxError(SourceLocation location, string message, ParserState parserState) {
+            Location = location;
+            Message = message;
+            ParserState = parserState;
+        }
+
+        public SourceLocation Location { get; }
+
+        public string Message { get; }
+
+        public ParserState ParserState { get; }
+
+        public static int CompareByLocation(SyntaxError x, SyntaxError y) {
+            return SourceLocation.Compare(x.Location, y.Location);
+        }
+
+        public int CompareTo(SyntaxError other) {
+            if (other == null) {
+                throw new ArgumentNullException(nameof(other));
+            }
+            return CompareByLocation(this, other);
+        }
+
+        public override string ToString() {
+            return Message;
+        }
+
     }
 
-    public readonly SourceLocation Location;
-    public readonly string Message;
-    public ParserState ParserState; 
-
-    public override string ToString() {
-      return Message;
-    }
-  }//class
-
-  public class SyntaxErrorList : List<SyntaxError> {
-    public static int ByLocation(SyntaxError x, SyntaxError y) {
-      return SourceLocation.Compare(x.Location, y.Location);
-    }
-  }
-
-}//namespace
+}

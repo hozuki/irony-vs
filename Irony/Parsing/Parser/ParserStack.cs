@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* **********************************************************************************
  * Copyright (c) Roman Ivantsov
  * This source code is subject to terms and conditions of the MIT License
@@ -10,38 +10,57 @@
  * **********************************************************************************/
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Irony.Parsing {
 
-  public class ParserStack : List<ParseTreeNode> {
-    public ParserStack() : base(200) { }
-    public void Push(ParseTreeNode nodeInfo) {
-      base.Add(nodeInfo);
+    public sealed class ParserStack : List<ParseTreeNode> {
+
+        public ParserStack()
+            : base(200) {
+        }
+
+        public void Push(ParseTreeNode node) {
+            Add(node);
+        }
+
+        public void Push(ParseTreeNode nodeInfo, ParserState state) {
+            nodeInfo.State = state;
+            Push(nodeInfo);
+        }
+
+        public ParseTreeNode Pop() {
+            if (Count < 0) {
+                return null;
+            }
+            var item = this[Count - 1];
+            RemoveAt(Count - 1);
+            return item;
+        }
+
+        public void Pop(int count) {
+            if (count <= 0) {
+                return;
+            }
+            var origIndex = Count - count;
+            var index = origIndex;
+            if (index < 0) {
+                index = 0;
+            }
+            if (origIndex != index) {
+                count -= origIndex - index;
+            }
+            RemoveRange(index, count);
+        }
+
+        public void PopUntil(int finalCount) {
+            if (finalCount < Count) {
+                Pop(Count - finalCount);
+            }
+        }
+
+        public ParseTreeNode Top => Count == 0 ? null : this[Count - 1];
+
     }
-    public void Push(ParseTreeNode nodeInfo, ParserState state) {
-      nodeInfo.State = state;
-      base.Add(nodeInfo); 
-    }
-    public ParseTreeNode Pop() {
-      var top = Top; 
-      base.RemoveAt(Count - 1);
-      return top; 
-    }
-    public void Pop(int count) {
-      base.RemoveRange(Count - count, count); 
-    }
-    public void PopUntil(int finalCount) {
-      if (finalCount < Count) 
-        Pop(Count - finalCount); 
-    }
-    public ParseTreeNode Top {
-      get {
-        if (Count == 0) return null;
-        return base[Count - 1];
-      }
-    }
-  }
+
 }

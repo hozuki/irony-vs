@@ -1,0 +1,8 @@
+.vs
+_ReSharper*
+[Bb]in
+[Oo]bj
+packages
+*.DotSettings
+*.suo
+*.user

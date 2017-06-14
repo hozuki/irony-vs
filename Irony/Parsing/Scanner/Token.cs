@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* **********************************************************************************
  * Copyright (c) Roman Ivantsov
  * This source code is subject to terms and conditions of the MIT License
@@ -10,94 +10,65 @@
  * **********************************************************************************/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
+using System.Diagnostics;
 
 namespace Irony.Parsing {
 
-  public enum TokenFlags {
-    IsIncomplete = 0x01,
-  }
+    //Tokens are produced by scanner and fed to parser, optionally passing through Token filters in between. 
+    public class Token {
 
-  public enum TokenCategory {
-    Content,
-    Outline, //newLine, indent, dedent
-    Comment,
-    Directive,
-    Error,
-  }
+        public Token(Terminal term, SourceLocation location, string text, object value) {
+            SetTerminal(term);
+            KeyTerm = term as KeyTerm;
+            Location = location;
+            Text = text;
+            Value = value;
+        }
 
-  public class TokenList : List<Token> {}
-  public class TokenStack : Stack<Token> { }
+        public Terminal Terminal { get; private set; }
 
-  //Tokens are produced by scanner and fed to parser, optionally passing through Token filters in between. 
-  public partial class Token {
-    public Terminal Terminal {get; private set;} 
-    public KeyTerm KeyTerm;
-    public readonly SourceLocation Location; 
-    public readonly string Text;
-    
-    public object Value;
-    public string ValueString {
-      get { return (Value == null ? string.Empty : Value.ToString()); }
-    } 
+        public KeyTerm KeyTerm { get; internal set; }
 
-    public object Details;
-    public TokenFlags Flags; 
-    public TokenEditorInfo EditorInfo;
+        public SourceLocation Location { get; }
 
-    public Token(Terminal term, SourceLocation location, string text, object value)  {
-      SetTerminal(term);
-      this.KeyTerm = term as KeyTerm;
-      Location = location;
-      Text = text;
-      Value = value; 
+        public string Text { get; }
+
+        public object Value { get; internal set; }
+
+        public string ValueString => Value?.ToString() ?? string.Empty;
+
+        public object Details { get; internal set; }
+
+        public TokenFlags Flags { get; internal set; }
+
+        public TokenEditorInfo EditorInfo { get; internal set; }
+
+        public void SetTerminal(Terminal terminal) {
+            Terminal = terminal;
+            EditorInfo = Terminal.EditorInfo;  //set to term's EditorInfo by default
+        }
+
+        public bool IsSet(TokenFlags flag) {
+            return (Flags & flag) != 0;
+        }
+
+        public TokenCategory Category => Terminal.Category;
+
+        public bool IsError => Category == TokenCategory.Error;
+
+        public int Length => Text?.Length ?? 0;
+
+        //matching opening/closing brace
+        public Token OtherBrace { get; internal set; }
+
+        //Scanner state after producing token 
+        public short ScannerState { get; internal set; }
+
+        [DebuggerStepThrough]
+        public override string ToString() {
+            return Terminal.TokenToString(this);
+        }
+
     }
 
-    public void SetTerminal(Terminal terminal) {
-      Terminal = terminal; 
-      this.EditorInfo = Terminal.EditorInfo;  //set to term's EditorInfo by default
-    }
-
-    public bool IsSet(TokenFlags flag) {
-      return (Flags & flag) != 0;
-    }
-    public TokenCategory Category  {
-      get { return Terminal.Category; }
-    }
-
-    public bool IsError() {
-      return Category == TokenCategory.Error;
-    }
-
-    public int Length {
-      get { return Text == null ? 0 : Text.Length; }
-    }
-
-    //matching opening/closing brace
-    public Token OtherBrace;
-
-    public short ScannerState; //Scanner state after producing token 
-
-    [System.Diagnostics.DebuggerStepThrough]
-    public override string ToString() {
-      return Terminal.TokenToString(this);
-    }//method
-
-  }//class
-
-  //Some terminals may need to return a bunch of tokens in one call to TryMatch; MultiToken is a container for these tokens
-  public class MultiToken : Token {
-    public TokenList ChildTokens;
-
-    public MultiToken(params Token[] tokens) : this(tokens[0].Terminal, tokens[0].Location, new TokenList()) {
-        ChildTokens.AddRange(tokens);
-    }
-    public MultiToken(Terminal term, SourceLocation location, TokenList childTokens) : base(term, location, string.Empty, null) {
-      ChildTokens = childTokens;
-    }
-  }//class
-
-}//namespace
+}

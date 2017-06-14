@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{17EDCA41-5095-42DC-A1A0-8212C0F9CC20}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Irony</RootNamespace>
+    <AssemblyName>Irony</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>irony.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ast\AstBuilder.cs" />
+    <Compile Include="Ast\AstContext.cs" />
+    <Compile Include="Ast\AstExtensions.cs" />
+    <Compile Include="Ast\AstNodeConfig.cs" />
+    <Compile Include="Ast\AstNodeCreator.cs" />
+    <Compile Include="Ast\AstNodeEventArgs.cs" />
+    <Compile Include="Ast\DefaultAstNodeCreator.cs" />
+    <Compile Include="Ast\IInitializableAstNode.cs" />
+    <Compile Include="Ast\IBrowsableAstNode.cs" />
+    <Compile Include="Parsing\Data\ParserStateFlags.cs" />
+    <Compile Include="Parsing\Parser\ValidateTokenEventArgsExtensions.cs" />
+    <Compile Include="Parsing\Terminals\HereDocOptions.cs" />
+    <Compile Include="Parsing\Terminals\HereDocTerminal.cs" />
+    <Compile Include="Parsing\Terminals\IdFlags.cs" />
+    <Compile Include="Parsing\Terminals\NumberFlagsInternal.cs" />
+    <Compile Include="Parsing\Terminals\StringFlagsInternal.cs" />
+    <Compile Include="Parsing\TokenFilters\CodeOutlineFilter.cs" />
+    <Compile Include="Parsing\TokenFilters\OutlineOptions.cs" />
+    <Compile Include="Parsing\Terminals\CaseRestriction.cs" />
+    <Compile Include="Parsing\Terminals\CommentTerminal.cs" />
+    <Compile Include="Parsing\Terminals\CompoundTerminalBase.cs" />
+    <Compile Include="Parsing\Terminals\ConstantsTable.cs" />
+    <Compile Include="Parsing\Terminals\ConstantTerminal.cs" />
+    <Compile Include="Parsing\Terminals\DataLiteralBase.cs" />
+    <Compile Include="Parsing\Terminals\DsvLiteral.cs" />
+    <Compile Include="Parsing\Terminals\EscapeTable.cs" />
+    <Compile Include="Parsing\Terminals\FixedLengthLiteral.cs" />
+    <Compile Include="Parsing\Terminals\FreeTextLiteral.cs" />
+    <Compile Include="Parsing\Terminals\FreeTextOptions.cs" />
+    <Compile Include="Parsing\Terminals\IdentifierTerminal.cs" />
+    <Compile Include="Parsing\Terminals\IdOptions.cs" />
+    <Compile Include="Parsing\Terminals\ImpliedSymbolTerminal.cs" />
+    <Compile Include="Parsing\Terminals\KeyTerm.cs" />
+    <Compile Include="Parsing\Terminals\KeyTermList.cs" />
+    <Compile Include="Parsing\Terminals\KeyTermTable.cs" />
+    <Compile Include="Parsing\Terminals\LineContinuationTerminal.cs" />
+    <Compile Include="Parsing\Terminals\NewLineTerminal.cs" />
+    <Compile Include="Parsing\Terminals\NumberLiteral.cs" />
+    <Compile Include="Parsing\Terminals\NumberOptions.cs" />
+    <Compile Include="Parsing\Terminals\QuotedValueLiteral.cs" />
+    <Compile Include="Parsing\Terminals\RegexBasedTerminal.cs" />
+    <Compile Include="Parsing\Terminals\RegexLiteral.cs" />
+    <Compile Include="Parsing\Terminals\RegexTermOptions.cs" />
+    <Compile Include="Parsing\Scanner\ISourceStream.cs" />
+    <Compile Include="Parsing\Scanner\MultiToken.cs" />
+    <Compile Include="Utilities\HashSetExtensions.cs" />
+    <Compile Include="Utilities\OrderedSet.cs" />
+    <Compile Include="Utilities\ParseDataPrinter.cs" />
+    <Compile Include="Parsing\Parser\ParseMode.cs" />
+    <Compile Include="Parsing\Parser\ParseOptions.cs" />
+    <Compile Include="Parsing\Parser\Parser.cs" />
+    <Compile Include="Parsing\Parser\ParserStack.cs" />
+    <Compile Include="Parsing\Parser\ParserStatus.cs" />
+    <Compile Include="Parsing\Parser\ParserTrace.cs" />
+    <Compile Include="Parsing\Parser\ParserTraceEntry.cs" />
+    <Compile Include="Parsing\Parser\ParserTraceEventArgs.cs" />
+    <Compile Include="Parsing\Parser\ParseTree.cs" />
+    <Compile Include="Parsing\Parser\ParseTreeExtensions.cs" />
+    <Compile Include="Parsing\Parser\ParseTreeNode.cs" />
+    <Compile Include="Parsing\Parser\ParseTreeNodeList.cs" />
+    <Compile Include="Parsing\Parser\ParseTreeStatus.cs" />
+    <Compile Include="Parsing\Parser\ParsingContext.cs" />
+    <Compile Include="Parsing\Parser\ParsingEventArgs.cs" />
+    <Compile Include="Parsing\Parser\ReducedEventArgs.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\ConditionalParserAction.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\CustomActionHint.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\CustomParserAction.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\ExecuteActionMethod.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\ImpliedPrecendenceHint.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\AcceptParserAction.cs" />
+    <Compile Include="Parsing\Construction\GrammarDataBuilder.cs" />
+    <Compile Include="Parsing\Construction\LanguageDataBuilder.cs" />
+    <Compile Include="Parsing\Construction\LR0Item.cs" />
+    <Compile Include="Parsing\Construction\LR0ItemList.cs" />
+    <Compile Include="Parsing\Construction\LR0ItemSet.cs" />
+    <Compile Include="Parsing\Construction\LRItem.cs" />
+    <Compile Include="Parsing\Construction\LRItemList.cs" />
+    <Compile Include="Parsing\Construction\LRItemSet.cs" />
+    <Compile Include="Parsing\Construction\ParserDataBuilder.cs" />
+    <Compile Include="Parsing\Construction\ParserStateData.cs" />
+    <Compile Include="Parsing\Construction\ScannerDataBuilder.cs" />
+    <Compile Include="Parsing\Construction\Transition.cs" />
+    <Compile Include="Parsing\Construction\TransitionList.cs" />
+    <Compile Include="Parsing\Construction\TransitionSet.cs" />
+    <Compile Include="Parsing\Construction\TransitionTable.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ErrorRecoveryParserAction.cs" />
+    <Compile Include="Parsing\Grammar\GrammarHintList.cs" />
+    <Compile Include="Parsing\Grammar\Associativity.cs" />
+    <Compile Include="Parsing\Grammar\BnfExpression.cs" />
+    <Compile Include="Parsing\Grammar\BnfExpressionData.cs" />
+    <Compile Include="Parsing\Grammar\BnfTerm.cs" />
+    <Compile Include="Parsing\Grammar\BnfTermList.cs" />
+    <Compile Include="Parsing\Grammar\BnfTermSet.cs" />
+    <Compile Include="Parsing\Data\GrammarData.cs" />
+    <Compile Include="Parsing\Data\LanguageData.cs" />
+    <Compile Include="Parsing\Data\ParserData.cs" />
+    <Compile Include="Parsing\Data\ParserState.cs" />
+    <Compile Include="Parsing\Data\ParserStateHash.cs" />
+    <Compile Include="Parsing\Data\ParserStateList.cs" />
+    <Compile Include="Parsing\Data\ParserStateSet.cs" />
+    <Compile Include="Parsing\Data\ParserStateTable.cs" />
+    <Compile Include="Parsing\Data\Production.cs" />
+    <Compile Include="Parsing\Data\ProductionFlags.cs" />
+    <Compile Include="Parsing\Data\ProductionList.cs" />
+    <Compile Include="Parsing\Data\ScannerData.cs" />
+    <Compile Include="Parsing\Data\TerminalLookupTable.cs" />
+    <Compile Include="Parsing\Grammar\Grammar.cs" />
+    <Compile Include="Parsing\Grammar\GrammarError.cs" />
+    <Compile Include="Parsing\Grammar\GrammarErrorException.cs" />
+    <Compile Include="Parsing\Grammar\GrammarErrorLevel.cs" />
+    <Compile Include="Parsing\Grammar\GrammarErrorList.cs" />
+    <Compile Include="Parsing\Grammar\GrammarHint.cs" />
+    <Compile Include="Parsing\Grammar\ICanRunSample.cs" />
+    <Compile Include="Utilities\IntList.cs" />
+    <Compile Include="Parsing\Grammar\LanguageAttribute.cs" />
+    <Compile Include="Parsing\Grammar\LanguageFlags.cs" />
+    <Compile Include="Parsing\Grammar\NonTerminal.cs" />
+    <Compile Include="Parsing\Grammar\NonTerminalList.cs" />
+    <Compile Include="Parsing\Grammar\NonTerminalSet.cs" />
+    <Compile Include="Parsing\Grammar\RunSampleArgs.cs" />
+    <Compile Include="Parsing\Grammar\TermFlags.cs" />
+    <Compile Include="Parsing\Grammar\TermListOptions.cs" />
+    <Compile Include="Parsing\Grammar\TermReportGroup.cs" />
+    <Compile Include="Parsing\Grammar\TermReportGroupList.cs" />
+    <Compile Include="Parsing\Grammar\TermReportGroupType.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ParserAction.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ParserActionTable.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ReduceListBuilderParserAction.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ReduceListContainerParserAction.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ReduceParserAction.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ReduceTransientParserAction.cs" />
+    <Compile Include="Parsing\Parser\ParserActions\ShiftParserAction.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\PrecendenceBasedParserAction.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\PrecendenceHint.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\PreferredActionHint.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\PreferredActionType.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\PreviewActionMethod.cs" />
+    <Compile Include="Parsing\Parser\SpecialActionHints\TokenPreviewHint.cs" />
+    <Compile Include="Parsing\Parser\SyntaxError.cs" />
+    <Compile Include="Parsing\Parser\SyntaxErrorList.cs" />
+    <Compile Include="Parsing\Parser\ValidateTokenEventArgs.cs" />
+    <Compile Include="Parsing\Parser\VsScannerStateMap.cs" />
+    <Compile Include="Parsing\Scanner\Scanner.cs" />
+    <Compile Include="Parsing\Scanner\SourceLocation.cs" />
+    <Compile Include="Parsing\Scanner\SourceSpan.cs" />
+    <Compile Include="Parsing\Scanner\SourceStream.cs" />
+    <Compile Include="Parsing\Scanner\Token.cs" />
+    <Compile Include="Parsing\Scanner\TokenCategory.cs" />
+    <Compile Include="Parsing\Scanner\TokenColor.cs" />
+    <Compile Include="Parsing\Scanner\TokenEditorInfo.cs" />
+    <Compile Include="Parsing\Scanner\TokenFlags.cs" />
+    <Compile Include="Parsing\Scanner\TokenList.cs" />
+    <Compile Include="Parsing\Scanner\TokenStack.cs" />
+    <Compile Include="Parsing\Scanner\TokenTriggers.cs" />
+    <Compile Include="Parsing\Scanner\TokenType.cs" />
+    <Compile Include="Parsing\Terminals\StringLiteral.cs" />
+    <Compile Include="Parsing\Terminals\StringOptions.cs" />
+    <Compile Include="Parsing\Terminals\StringTemplateSettings.cs" />
+    <Compile Include="Parsing\Terminals\Terminal.cs" />
+    <Compile Include="Parsing\Terminals\TerminalFactory.cs" />
+    <Compile Include="Parsing\Terminals\TerminalList.cs" />
+    <Compile Include="Parsing\Terminals\TerminalPriority.cs" />
+    <Compile Include="Parsing\Terminals\TerminalSet.cs" />
+    <Compile Include="Parsing\Terminals\UnicodeCategoryList.cs" />
+    <Compile Include="Parsing\Terminals\WikiTerminals\WikiBlockTerminal.cs" />
+    <Compile Include="Parsing\Terminals\WikiTerminals\WikiBlockType.cs" />
+    <Compile Include="Parsing\Terminals\WikiTerminals\WikiTagTerminal.cs" />
+    <Compile Include="Parsing\Terminals\WikiTerminals\WikiTerminalBase.cs" />
+    <Compile Include="Parsing\Terminals\WikiTerminals\WikiTermType.cs" />
+    <Compile Include="Parsing\Terminals\WikiTerminals\WikiTextTerminal.cs" />
+    <Compile Include="Parsing\TokenFilters\TokenFilter.cs" />
+    <Compile Include="Parsing\TokenFilters\TokenFilterList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\CharHashSet.cs" />
+    <Compile Include="Utilities\CharList.cs" />
+    <Compile Include="Utilities\ErrorLevel.cs" />
+    <Compile Include="Utilities\LogMessage.cs" />
+    <Compile Include="Utilities\LogMessageList.cs" />
+    <Compile Include="Utilities\ParsingEnumExtensions.cs" />
+    <Compile Include="Utilities\StringDictionary.cs" />
+    <Compile Include="Utilities\StringList.cs" />
+    <Compile Include="Utilities\Strings.cs" />
+    <Compile Include="Utilities\StringSet.cs" />
+    <Compile Include="Utilities\TypeList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Parsing\Construction\About parser construction.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="irony.snk" />
+    <None Include="MS-PubLicense.Rtf" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

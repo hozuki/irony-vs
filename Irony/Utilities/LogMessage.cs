@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* **********************************************************************************
  * Copyright (c) Roman Ivantsov
  * This source code is subject to terms and conditions of the MIT License
@@ -11,42 +11,43 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Irony.Parsing;
 
-namespace Irony {
+namespace Irony.Utilities {
 
-  public enum ErrorLevel {
-    Info = 0,
-    Warning = 1,
-    Error = 2,
-  }
+    //Container for syntax errors and warnings
+    public sealed class LogMessage : IComparable<LogMessage> {
 
-  //Container for syntax errors and warnings
-  public class LogMessage {
-    public LogMessage(ErrorLevel level, SourceLocation location, string message, ParserState parserState) {
-      Level = level; 
-      Location = location;
-      Message = message;
-      ParserState = parserState;
+        public LogMessage(ErrorLevel level, SourceLocation location, string message, ParserState parserState) {
+            Level = level;
+            Location = location;
+            Message = message;
+            ParserState = parserState;
+        }
+
+        public ErrorLevel Level { get; }
+
+        public ParserState ParserState { get; }
+
+        public SourceLocation Location { get; }
+
+        public string Message { get; }
+
+        public static int CompareByLocation(LogMessage x, LogMessage y) {
+            return SourceLocation.Compare(x.Location, y.Location);
+        }
+
+        public int CompareTo(LogMessage other) {
+            if (other == null) {
+                throw new ArgumentNullException(nameof(other));
+            }
+            return CompareByLocation(this, other);
+        }
+
+        public override string ToString() {
+            return Message;
+        }
+
     }
 
-    public readonly ErrorLevel Level;
-    public readonly ParserState ParserState;
-    public readonly SourceLocation Location;
-    public readonly string Message;
-
-    public override string ToString() {
-      return Message;
-    }
-  }//class
-
-  public class LogMessageList : List<LogMessage> {
-    public static int ByLocation(LogMessage x, LogMessage y) {
-      return SourceLocation.Compare(x.Location, y.Location);
-    }
-  }
-
-}//namespace
+}

@@ -10,42 +10,10 @@
  * **********************************************************************************/
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Irony.Parsing {
-  public class ParserTraceEntry {
-    public ParserState State;
-    public ParseTreeNode StackTop;
-    public ParseTreeNode Input;
-    public string Message;
-    public bool IsError;
 
-    public ParserTraceEntry(ParserState state, ParseTreeNode stackTop, ParseTreeNode input, string message, bool isError) {
-      State = state;
-      StackTop = stackTop;
-      Input = input;
-      Message = message;
-      IsError = isError;
-    }
-  }//class
+    public sealed class ParserTrace : List<ParserTraceEntry> { }
 
-  public class ParserTrace : List<ParserTraceEntry> { }
-
-  public class ParserTraceEventArgs : EventArgs {
-    public ParserTraceEventArgs(ParserTraceEntry entry) {
-      Entry = entry; 
-    }
-
-    public readonly ParserTraceEntry Entry;
-
-    public override string ToString() {
-      return Entry.ToString(); 
-    }
-  }//class
-
-
-
-}//namespace
+}

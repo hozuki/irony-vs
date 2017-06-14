@@ -10,27 +10,28 @@
  * **********************************************************************************/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Irony.Parsing {
 
-  public class TerminalLookupTable : Dictionary<char, TerminalList> { }
+    // ScannerData is a container for all detailed info needed by scanner to read input. 
+    public sealed class ScannerData {
 
-  // ScannerData is a container for all detailed info needed by scanner to read input. 
-  public class ScannerData {
-    public readonly LanguageData Language;
-    public readonly TerminalLookupTable TerminalsLookup = new TerminalLookupTable(); //hash table for fast terminal lookup by input char
-    public readonly TerminalList MultilineTerminals = new TerminalList();
-    public TerminalList NoPrefixTerminals = new TerminalList(); //Terminals with no limited set of prefixes, copied from GrammarData 
-    //hash table for fast lookup of non-grammar terminals by input char
-    public readonly TerminalLookupTable NonGrammarTerminalsLookup = new TerminalLookupTable(); 
+        public ScannerData(LanguageData language) {
+            Language = language;
+        }
 
-    public ScannerData(LanguageData language) {
-      Language  = language;
+        public LanguageData Language { get; }
+
+        // Hash table for fast terminal lookup by input char
+        public TerminalLookupTable TerminalsLookup { get; } = new TerminalLookupTable();
+
+        public TerminalList MultilineTerminals { get; } = new TerminalList();
+
+        // Terminals with no limited set of prefixes, copied from GrammarData 
+        public TerminalList NoPrefixTerminals { get; } = new TerminalList();
+
+        // Hash table for fast lookup of non-grammar terminals by input char
+        public TerminalLookupTable NonGrammarTerminalsLookup { get; } = new TerminalLookupTable();
+
     }
-  }//class
 
-}//namespace
+}

@@ -11,43 +11,38 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 
 namespace Irony.Parsing {
 
-  [AttributeUsage(AttributeTargets.Class)]
-  public class LanguageAttribute : Attribute {
-    public LanguageAttribute() : this(null) { }
-    public LanguageAttribute(string languageName) : this(languageName, "1.0", string.Empty) { }
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class LanguageAttribute : Attribute {
 
-    public LanguageAttribute(string languageName, string version, string description) {
-      _languageName = languageName;
-      _version = version;
-      _description = description;
-    }
-    
-    public string LanguageName {
-      get { return _languageName; }
-    } string _languageName;
+        public LanguageAttribute()
+            : this(null) {
+        }
 
-    public string Version {
-      get { return _version; }
-    } string _version;
+        public LanguageAttribute(string languageName)
+            : this(languageName, "1.0", string.Empty) {
+        }
 
-    public string Description {
-      get { return _description; }
-    } string _description; 
+        public LanguageAttribute(string languageName, string version, string description) {
+            LanguageName = languageName;
+            Version = version;
+            Description = description;
+        }
 
-    public static LanguageAttribute GetValue(Type grammarClass) {
-      object[] attrs = grammarClass.GetCustomAttributes(typeof(LanguageAttribute), true);
-      if (attrs != null && attrs.Length > 0) {
-        LanguageAttribute la = attrs[0] as LanguageAttribute;
-        return la; 
-      }
-      return null; 
-    }
+        public string LanguageName { get; }
 
-  }//class
-}//namespace
+        public string Version { get; }
+
+        public string Description { get; }
+
+        public static LanguageAttribute GetValue(Type grammarClass) {
+            var attr = grammarClass.GetCustomAttribute<LanguageAttribute>();
+            return attr;
+        }
+
+    }//class
+
+}

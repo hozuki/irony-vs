@@ -10,47 +10,53 @@
  * **********************************************************************************/
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Irony.Utilities;
 
 namespace Irony.Parsing {
-  //This is a simple NewLine terminal recognizing line terminators for use in grammars for line-based languages like VB
-  // instead of more complex alternative of using CodeOutlineFilter. 
-  public class NewLineTerminal : Terminal {
-    public NewLineTerminal(string name) : base(name, TokenCategory.Outline) {
-      base.ErrorAlias = Resources.LabelLineBreak;  // "[line break]";
-      this.Flags |= TermFlags.IsPunctuation;
+
+    //This is a simple NewLine terminal recognizing line terminators for use in grammars for line-based languages like VB
+    // instead of more complex alternative of using CodeOutlineFilter. 
+    public sealed class NewLineTerminal : Terminal {
+
+        public NewLineTerminal(string name)
+            : base(name, TokenCategory.Outline) {
+            ErrorAlias = Resources.LabelLineBreak;  // "[line break]";
+            Flags |= TermFlags.IsPunctuation;
+        }
+
+        public CharHashSet LineTerminators { get; } = new CharHashSet { '\n', '\r', '\v' };
+
+        #region overrides: Init, GetFirsts, TryMatch
+        public override void Initialize(GrammarData grammarData) {
+            base.Initialize(grammarData);
+            Grammar.UsesNewLine = true; //That will prevent SkipWhitespace method from skipping new-line chars
+        }
+
+        public override IList<string> GetFirsts() {
+            var firsts = new StringList();
+            firsts.AddRange(LineTerminators.Select(t => t.ToString()));
+            return firsts;
+        }
+
+        public override Token TryMatch(ParsingContext context, ISourceStream source) {
+            var current = source.PreviewChar;
+            if (!LineTerminators.Contains(current)) {
+                return null;
+            }
+            //Treat \r\n as a single terminator
+            var doExtraShift = (current == '\r' && source.NextPreviewChar == '\n');
+            source.PreviewPosition++; //main shift
+            if (doExtraShift) {
+                source.PreviewPosition++;
+            }
+
+            var result = source.CreateToken(OutputTerminal);
+            return result;
+        }
+        #endregion
+
     }
 
-    public string LineTerminators = "\n\r\v";
-
-    #region overrides: Init, GetFirsts, TryMatch
-    public override void Init(GrammarData grammarData) {
-      base.Init(grammarData);
-      Grammar.UsesNewLine = true; //That will prevent SkipWhitespace method from skipping new-line chars
-    }
-    public override IList<string> GetFirsts() {
-      StringList firsts = new StringList();
-      foreach(char t in LineTerminators)
-        firsts.Add(t.ToString());
-      return firsts;
-    }
-    public override Token TryMatch(ParsingContext context, ISourceStream source) {
-      char current = source.PreviewChar;
-      if (!LineTerminators.Contains(current)) return null;
-      //Treat \r\n as a single terminator
-      bool doExtraShift = (current == '\r' && source.NextPreviewChar == '\n');
-      source.PreviewPosition++; //main shift
-      if (doExtraShift)
-        source.PreviewPosition++;
-      Token result = source.CreateToken(this.OutputTerminal);
-      return result;
-    }
-
-    #endregion
-
-    
-  }//class
-}//namespace
+}

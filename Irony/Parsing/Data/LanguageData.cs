@@ -10,36 +10,41 @@
  * **********************************************************************************/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Irony.Parsing.Construction;
+namespace Irony.Parsing {
 
-namespace Irony.Parsing { 
-  public partial class LanguageData {
-    public readonly Grammar Grammar;
-    public readonly GrammarData GrammarData; 
-    public readonly ParserData ParserData;
-    public readonly ScannerData ScannerData;
-    public readonly GrammarErrorList Errors = new GrammarErrorList(); 
-    public GrammarErrorLevel ErrorLevel = GrammarErrorLevel.NoError;
-    public long ConstructionTime;
-    public bool AstDataVerified;
+    public sealed class LanguageData {
 
-    public LanguageData(Grammar grammar) {
-      Grammar = grammar;
-      GrammarData = new GrammarData(this);
-      ParserData = new ParserData(this);
-      ScannerData = new ScannerData(this);
-      ConstructAll(); 
+        public LanguageData(Grammar grammar) {
+            Grammar = grammar;
+            GrammarData = new GrammarData(this);
+            ParserData = new ParserData(this);
+            ScannerData = new ScannerData(this);
+            ConstructAll();
+        }
+
+        public Grammar Grammar { get; }
+
+        public GrammarData GrammarData { get; }
+
+        public ParserData ParserData { get; }
+
+        public ScannerData ScannerData { get; }
+
+        public GrammarErrorList Errors { get; } = new GrammarErrorList();
+
+        public GrammarErrorLevel ErrorLevel { get; internal set; } = GrammarErrorLevel.NoError;
+
+        public long ConstructionTime { get; internal set; }
+
+        public bool AstDataVerified { get; internal set; }
+
+        public void ConstructAll() {
+            var builder = new LanguageDataBuilder(this);
+            builder.Build();
+        }
+
+        public bool CanParse => ErrorLevel < GrammarErrorLevel.Error;
+
     }
-    public void ConstructAll() {
-      var builder = new LanguageDataBuilder(this);
-      builder.Build();
-    }
-    public bool CanParse() {
-      return ErrorLevel < GrammarErrorLevel.Error;
-    }
-  }//class
-}//namespace
+
+}
