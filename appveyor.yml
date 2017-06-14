@@ -18,12 +18,22 @@ environment:
 before_build:
   nuget restore
 after_build:
+  - 7z a irony.zip -r %APPVEYOR_BUILD_FOLDER%/Irony/bin/%CONFIGURATION%/*.dll
+  - 7z a irony.zip -r %APPVEYOR_BUILD_FOLDER%/Irony/bin/%CONFIGURATION%/*.xml
+  - 7z a irony.zip -r %APPVEYOR_BUILD_FOLDER%/Irony.Interpreter/bin/%CONFIGURATION%/*.dll
+  - 7z a irony.zip -r %APPVEYOR_BUILD_FOLDER%/Irony.Interpreter/bin/%CONFIGURATION%/*.xml
+  - copy irony.zip irony-vs-v%APPVEYOR_BUILD_VERSION%.zip
+  - copy irony.zip irony-vs-latest.zip
 test:
   assemblies:
     only:
       - Irony.dll
       - Irony.Interpreter.dll
 artifacts:
+  - path: irony-vs-v%APPVEYOR_BUILD_VERSION%.zip
+    name: WithVersion
+  - path: irony-vs-latest.zip
+    name: Static
 assembly_info:
   patch: true
   file: AssemblyInfo.*
