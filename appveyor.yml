@@ -25,7 +25,7 @@ after_build:
 test:
   assemblies:
     only:
-      - *.Tests.dll
+      - '**\*.Tests.dll'
 artifacts:
   - path: irony-vs-v%APPVEYOR_BUILD_VERSION%.zip
     name: WithVersion
