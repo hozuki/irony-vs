@@ -185,7 +185,7 @@ namespace Irony.Parsing {
                 return action;
             }
             //If input is EOF and NewLineBeforeEof flag is set, try using NewLine to find action
-            if (currInput.Term == _grammar.Eof && _grammar.LanguageFlags.IsSet(LanguageFlags.NewLineBeforeEof) &&
+            if (currInput.Term == _grammar.Eof && _grammar.LanguageFlags.IsSet(LanguageFlags.NewLineBeforeEOF) &&
                 currState.Actions.TryGetValue(_grammar.NewLine, out action)) {
                 //There's no action for EOF but there's action for NewLine. Let's add newLine token as input, just in case
                 // action code wants to check input - it should see NewLine.

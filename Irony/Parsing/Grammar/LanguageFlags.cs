@@ -21,7 +21,7 @@ namespace Irony.Parsing {
         //Compilation options
         //Be careful - use this flag ONLY if you use NewLine terminal in grammar explicitly!
         // - it happens only in line-based languages like Basic.
-        NewLineBeforeEof = 0x01,
+        NewLineBeforeEOF = 0x01,
         //Emit LineStart token
         EmitLineStartToken = 0x02,
         DisableScannerParserLink = 0x04, //in grammars that define TokenFilters (like Python) this flag should be set

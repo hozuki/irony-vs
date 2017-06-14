@@ -11,6 +11,7 @@
 #endregion
 
 using System;
+using System.Reflection;
 using System.Reflection.Emit;
 using Irony.Parsing;
 using Irony.Utilities;
@@ -112,8 +113,11 @@ namespace Irony.Ast {
         }
 
         //Contributed by William Horner (wmh)
-        private DefaultAstNodeCreator CompileDefaultNodeCreator(Type nodeType) {
+        private static DefaultAstNodeCreator CompileDefaultNodeCreator(Type nodeType) {
             var constructor = nodeType.GetConstructor(Type.EmptyTypes);
+            if (constructor == null) {
+                throw new MissingMethodException(nodeType.Name, ".ctor");
+            }
             var method = new DynamicMethod("CreateAstNode", nodeType, Type.EmptyTypes);
             var il = method.GetILGenerator();
             il.Emit(OpCodes.Newobj, constructor);

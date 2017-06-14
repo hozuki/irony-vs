@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EC4679A5-8C56-457F-8AF4-90D9A4B5FD46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Irony.Interpreter</RootNamespace>
+    <AssemblyName>Irony.Interpreter</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>irony.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bindings\Clr\ClrFieldBindingTargetInfo.cs" />
+    <Compile Include="Bindings\Clr\ClrInteropBindingTargetInfo.cs" />
+    <Compile Include="Bindings\Clr\ClrMethodBindingTargetInfo.cs" />
+    <Compile Include="Bindings\Clr\ClrNamespaceBindingTargetInfo.cs" />
+    <Compile Include="Bindings\Clr\ClrPropertyBindingTargetInfo.cs" />
+    <Compile Include="Bindings\Clr\ClrTargetType.cs" />
+    <Compile Include="Bindings\Clr\ClrTypeBindingTargetInfo.cs" />
+    <Compile Include="Bindings\ConstantBinding.cs" />
+    <Compile Include="Evaluator\ExpressionEvaluator.cs" />
+    <Compile Include="Evaluator\ExpressionEvaluatorGrammar.cs" />
+    <Compile Include="Evaluator\ExpressionEvaluatorRuntime.cs" />
+    <Compile Include="InterpretedLanguageGrammar.cs" />
+    <Compile Include="ScriptApplication\AppStatus.cs" />
+    <Compile Include="ScriptApplication\CommandLine.cs" />
+    <Compile Include="ScriptApplication\ConsoleAdapter.cs" />
+    <Compile Include="ScriptApplication\ConsoleTextStyle.cs" />
+    <Compile Include="ScriptApplication\IConsoleAdapter.cs" />
+    <Compile Include="Scopes\AppDataMap.cs" />
+    <Compile Include="Ast\Statements\AssignmentNode.cs" />
+    <Compile Include="Ast\AstContext\InterpreterAstContext.cs" />
+    <Compile Include="Ast\AstContext\OperatorHandler.cs" />
+    <Compile Include="Ast\AstContext\OperatorInfo.cs" />
+    <Compile Include="Ast\AstContext\OperatorInfoDictionary.cs" />
+    <Compile Include="Ast\Base\AstNode.cs" />
+    <Compile Include="Ast\Base\AstNodeFlags.cs" />
+    <Compile Include="Ast\Base\AstNodeList.cs" />
+    <Compile Include="Ast\Base\CustomExpressionTypes.cs" />
+    <Compile Include="Ast\Base\EvaluateMethod.cs" />
+    <Compile Include="Ast\Base\IAstVisitor.cs" />
+    <Compile Include="Ast\Base\ICallTarget.cs" />
+    <Compile Include="Ast\Base\IVisitableNode.cs" />
+    <Compile Include="Ast\Base\NodeUseType.cs" />
+    <Compile Include="Ast\Base\ValueSetterMethod.cs" />
+    <Compile Include="Ast\SpecialNodes\EmptyStatementNode.cs" />
+    <Compile Include="Ast\Expressions\BinaryOperationNode.cs" />
+    <Compile Include="Ast\Expressions\ExpressionListNode.cs" />
+    <Compile Include="Ast\Expressions\IfNode.cs" />
+    <Compile Include="Ast\Expressions\IncDecNode.cs" />
+    <Compile Include="Ast\Expressions\IndexedAccessNode.cs" />
+    <Compile Include="Ast\Expressions\MemberAccessNode.cs" />
+    <Compile Include="Ast\Expressions\UnaryOperationNode.cs" />
+    <Compile Include="Ast\Functions\Closure.cs" />
+    <Compile Include="Ast\Functions\FunctionCallNode.cs" />
+    <Compile Include="Ast\Functions\FunctionDefNode.cs" />
+    <Compile Include="Ast\Functions\LambdaNode.cs" />
+    <Compile Include="Ast\Functions\ParamListNode.cs" />
+    <Compile Include="Ast\SpecialNodes\NotSupportedNode.cs" />
+    <Compile Include="Ast\SpecialNodes\NullNode.cs" />
+    <Compile Include="Ast\PrimitiveNodes\IdentifierNode.cs" />
+    <Compile Include="Ast\PrimitiveNodes\LiteralValueNode.cs" />
+    <Compile Include="Ast\PrimitiveNodes\StringTemplateNode.cs" />
+    <Compile Include="Ast\Statements\StatementListNode.cs" />
+    <Compile Include="LanguageRuntime\BinaryOperatorMethod.cs" />
+    <Compile Include="Bindings\Binding.cs" />
+    <Compile Include="Bindings\BindingRequest.cs" />
+    <Compile Include="Bindings\BindingRequestFlags.cs" />
+    <Compile Include="Bindings\BindingSourceList.cs" />
+    <Compile Include="Bindings\BindingSourceTable.cs" />
+    <Compile Include="Bindings\BindingSourceTableExtensions.cs" />
+    <Compile Include="Bindings\BindingTargetInfo.cs" />
+    <Compile Include="Bindings\BindingTargetType.cs" />
+    <Compile Include="Bindings\BuiltInCallableTargetInfo.cs" />
+    <Compile Include="Bindings\BuiltInCallTarget.cs" />
+    <Compile Include="Bindings\BuiltInMethod.cs" />
+    <Compile Include="Bindings\IBindingSource.cs" />
+    <Compile Include="Bindings\ModuleExport.cs" />
+    <Compile Include="LanguageRuntime\ConsoleWriteEventArgs.cs" />
+    <Compile Include="LanguageRuntime\LanguageRuntime.Binding.cs" />
+    <Compile Include="LanguageRuntime\LanguageRuntime.cs" />
+    <Compile Include="LanguageRuntime\LanguageRuntime.OpDispatch.cs" />
+    <Compile Include="LanguageRuntime\LanguageRuntime.OpDispatch.Init.cs" />
+    <Compile Include="LanguageRuntime\NoneClass.cs" />
+    <Compile Include="LanguageRuntime\OperatorDispatchKey.cs" />
+    <Compile Include="LanguageRuntime\OperatorDispatchKeyComparer.cs" />
+    <Compile Include="LanguageRuntime\OperatorImplementation.cs" />
+    <Compile Include="LanguageRuntime\OperatorImplementationTable.cs" />
+    <Compile Include="Scopes\ModuleInfo.cs" />
+    <Compile Include="Scopes\ModuleInfoList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Bindings\SlotBinding.cs" />
+    <Compile Include="Bindings\SpecialFormBinding.cs" />
+    <Compile Include="Diagnostics\ScriptException.cs" />
+    <Compile Include="Diagnostics\ScriptStackTrace.cs" />
+    <Compile Include="LanguageRuntime\SpecialForm.cs" />
+    <Compile Include="LanguageRuntime\SpecialFormsLibrary.cs" />
+    <Compile Include="LanguageRuntime\TypeConverterTable.cs" />
+    <Compile Include="LanguageRuntime\UnaryOperatorMethod.cs" />
+    <Compile Include="Scopes\Scope.cs" />
+    <Compile Include="Scopes\ScopeBase.cs" />
+    <Compile Include="Scopes\ScopeInfo.cs" />
+    <Compile Include="Scopes\ScopeInfoList.cs" />
+    <Compile Include="Scopes\ScopeValuesDictionary.cs" />
+    <Compile Include="Scopes\SlotInfo.cs" />
+    <Compile Include="Scopes\SlotInfoDictionary.cs" />
+    <Compile Include="Scopes\SlotType.cs" />
+    <Compile Include="ScriptApplication\ScriptApp.cs" />
+    <Compile Include="ScriptApplication\ScriptThread.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
+    <Compile Include="Utilities\Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="irony.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Irony\Irony.csproj">
+      <Project>{17EDCA41-5095-42DC-A1A0-8212C0F9CC20}</Project>
+      <Name>Irony</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Scopes\About storage.txt" />
+    <Content Include="Bindings\About bindings.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

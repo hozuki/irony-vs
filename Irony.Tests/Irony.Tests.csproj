@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.1.11\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -46,14 +49,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommentTerminalTests.cs" />
     <Compile Include="DataLiteralsTests.cs" />
     <Compile Include="ErrorRecoveryTests.cs" />
+    <Compile Include="EvaluatorTests.cs" />
     <Compile Include="FreeTextLiteralTests.cs" />
     <Compile Include="HeredocTerminalTests.cs" />
     <Compile Include="IdentifierTerminalTests.cs" />
+    <Compile Include="IntegrationTests.cs" />
     <Compile Include="LineContinuationTests.cs" />
     <Compile Include="NumberLiteralTests.cs" />
     <Compile Include="OperatorTests.cs" />
@@ -70,6 +77,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Irony.Interpreter\Irony.Interpreter.csproj">
+      <Project>{ec4679a5-8c56-457f-8af4-90d9a4b5fd46}</Project>
+      <Name>Irony.Interpreter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Irony\Irony.csproj">
       <Project>{17edca41-5095-42dc-a1a0-8212c0f9cc20}</Project>
       <Name>Irony</Name>

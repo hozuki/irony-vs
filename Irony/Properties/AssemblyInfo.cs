@@ -12,6 +12,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -52,3 +53,5 @@ using System.Security;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly:InternalsVisibleTo("Irony.Interpreter, PublicKey=0024000004800000940000000602000000240000525341310004000001000100d1a8ec79a5d0aa68a88949f79fa523fff11ec1b2e81a52fb12ae0a3d932c9a7643c9a6c82095bedfa5745bef414ae5445953373977d5ec94d61b7ea49f340506d0bd22c494edb404f76dde2f4f9a2a72a0892c8b3875999d62dbb20eaa3e57b18525f3c16554a676b472a7cc0b113faeae860a4be5b5c6fe20476e24522672ab")]
