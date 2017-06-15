@@ -141,15 +141,9 @@ namespace Irony.Parsing {
                 quoteStrings.UnionWith(subType.Quotes);
             }
 
-            var allStartSymbols = new StringSet();
+            // Cases are merged, no need to check duplicated entries.
             var isTemplate = false;
             foreach (var subType in _subTypes) {
-                if (allStartSymbols.Contains(subType.Start)) {
-                    //"Duplicate start symbol {0} in heredoc literal [{1}]."
-                    grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrDupStartSymbolHereDoc, subType.Start, Name);
-                }
-
-                allStartSymbols.Add(subType.Start);
                 _startSymbolsFirsts.Add(subType.Start[0]);
                 if ((subType.Flags & HereDocOptions.IsTemplate) != 0) {
                     isTemplate = true;
@@ -245,11 +239,15 @@ namespace Irony.Parsing {
                 source.PreviewPosition = endPos + endQuoteSymbol.Length;
 
 
+                var indent = 0;
                 // Remove the last newline.
                 while (source.Text[endPos] != '\n') {
                     // Remove the indentations.
                     --endPos;
+                    ++indent;
                 }
+                // Compensation for the extra '\n'.
+                --indent;
                 // Text[endPos] is now always \n.
                 if (source.Text[endPos - 1] == '\r') {
                     --endPos;
@@ -263,7 +261,32 @@ namespace Irony.Parsing {
                     }
                 }
 
-                details.Body = source.Text.Substring(start, endPos - start);
+                var body = source.Text.Substring(start, endPos - start);
+                if (details.IsSet((short)HereDocOptions.AllowIndentedEndToken) && details.IsSet((short)HereDocOptions.RemoveIndents) && indent > 0) {
+                    // Remove indentations.
+                    var undented = false;
+                    var lines = body.Split('\n');
+                    for (var i = 0; i < lines.Length; ++i) {
+                        var line = lines[i];
+                        if (line.Length == 0 || !Grammar.IsWhitespace(line[0])) {
+                            continue;
+                        }
+                        var n = 0;
+                        while (n < indent && n < line.Length && Grammar.IsWhitespace(line[n])) {
+                            ++n;
+                        }
+                        if (n != 0) {
+                            line = n == line.Length ? string.Empty : line.Substring(n, line.Length - n);
+                            lines[i] = line;
+                            undented = true;
+                        }
+                    }
+                    if (undented) {
+                        body = string.Join("\n", lines);
+                    }
+                }
+
+                details.Body = body;
                 //if we come here it means we're done - we found string end.
                 return true;
             }
@@ -340,6 +363,7 @@ namespace Irony.Parsing {
                     ++source.PreviewPosition;
                     previewChar = source.PreviewChar;
                 }
+
                 var endLiteral = sb.ToString();
                 if (quote != null) {
                     var comparisonType = QuoteCaseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase;
