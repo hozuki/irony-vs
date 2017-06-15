@@ -235,18 +235,26 @@ namespace Irony.Parsing {
                     continue; //searching for end symbol
                 }
 
-                source.PreviewPosition = endPos;
+                // Check if not correctly indented.
+                if (source.Text[endPos - 1] != '\n' && !details.IsSet((short)HereDocOptions.AllowIndentedEndToken)) {
+                    return false;
+                }
 
                 //Ok, this is normal endSymbol that terminates the string. 
                 // Advance source position and get out from the loop
                 source.PreviewPosition = endPos + endQuoteSymbol.Length;
+
+
                 // Remove the last newline.
-                // Text[endPos-1] is always \n.
-                if (source.Text[endPos - 2] == '\r') {
-                    endPos -= 2;
-                } else {
-                    endPos -= 1;
+                while (source.Text[endPos] != '\n') {
+                    // Remove the indentations.
+                    --endPos;
                 }
+                // Text[endPos] is now always \n.
+                if (source.Text[endPos - 1] == '\r') {
+                    --endPos;
+                }
+
                 if (details.IsSet((short)HereDocOptions.RemoveBeginningNewLine)) {
                     if (source.Text[start] == '\r') {
                         start += 2;
@@ -254,6 +262,7 @@ namespace Irony.Parsing {
                         start += 1;
                     }
                 }
+
                 details.Body = source.Text.Substring(start, endPos - start);
                 //if we come here it means we're done - we found string end.
                 return true;
