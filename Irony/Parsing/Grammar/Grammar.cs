@@ -201,10 +201,15 @@ namespace Irony.Parsing {
         protected internal virtual void OnScannerSelectTerminal(ParsingContext context) {
         }
 
+        internal void SkipWhitespace(ISourceStream source) {
+            SkipWhitespace(source, false);
+        }
+
         /// <summary>Skips whitespace characters in the input stream. </summary>
         /// <remarks>Override this method if your language has non-standard whitespace characters.</remarks>
         /// <param name="source">Source stream.</param>
-        protected internal virtual void SkipWhitespace(ISourceStream source) {
+        /// <param name="usesNewLineOverride">If this is set, new line characters must not be treated as whitespaces.</param>
+        protected internal virtual void SkipWhitespace(ISourceStream source, bool usesNewLineOverride) {
             while (!source.EOF) {
                 switch (source.PreviewChar) {
                     case ' ':
@@ -213,7 +218,7 @@ namespace Irony.Parsing {
                     case '\r':
                     case '\n':
                     case '\v':
-                        if (UsesNewLine) {
+                        if (UsesNewLine || usesNewLineOverride) {
                             return; //do not treat as whitespace if language is line-based
                         }
                         break;
@@ -229,13 +234,29 @@ namespace Irony.Parsing {
         /// <returns>True if a character is whitespace or delimiter; otherwise, false.</returns>
         /// <remarks>Does not have to be completely accurate, should recognize most common characters that are special chars by themselves
         /// and may never be part of other multi-character tokens. </remarks>
-        protected internal virtual bool IsWhitespaceOrDelimiter(char ch) {
+        internal bool IsWhitespaceOrDelimiter(char ch) {
+            return IsWhitespace(ch) || IsDelimiter(ch);
+        }
+
+        protected internal virtual bool IsWhitespace(char ch) {
             switch (ch) {
-                case ' ':
-                case '\t':
-                case '\r':
-                case '\n':
-                case '\v': //whitespaces
+                case '(':
+                case ')':
+                case ',':
+                case ';':
+                case '[':
+                case ']':
+                case '{':
+                case '}':
+                case (char)0: //EOF
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        protected internal virtual bool IsDelimiter(char ch) {
+            switch (ch) {
                 case '(':
                 case ')':
                 case ',':
@@ -440,7 +461,7 @@ namespace Irony.Parsing {
         public readonly NewLineTerminal NewLine = new NewLineTerminal("LF");
 
         //set to true automatically by NewLine terminal; prevents treating new-line characters as whitespaces
-        public bool UsesNewLine;
+        public bool UsesNewLine { get; internal set; }
 
         // The following terminals are used in indent-sensitive languages like Python;
         // they are not produced by scanner but are produced by CodeOutlineFilter after scanning

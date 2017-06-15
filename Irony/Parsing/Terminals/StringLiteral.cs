@@ -52,10 +52,10 @@ namespace Irony.Parsing {
         public void AddStartEnd(string startSymbol, string endSymbol, StringOptions stringOptions) {
             _subtypes.Add(startSymbol, endSymbol, stringOptions);
         }
+
         public void AddPrefix(string prefix, StringOptions flags) {
             AddPrefixFlag(prefix, (short)flags);
         }
-
         #endregion
 
         #region StringSubType
@@ -94,9 +94,10 @@ namespace Irony.Parsing {
         #region overrides: Init, GetFirsts, ReadBody, etc...
         public override void Initialize(GrammarData grammarData) {
             base.Initialize(grammarData);
-            _startSymbolsFirsts = string.Empty;
+            _startSymbolsFirsts = new CharHashSet(CaseSensitivePrefixesSuffixes);
             if (_subtypes.Count == 0) {
-                grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrInvStrDef, Name); //"Error in string literal [{0}]: No start/end symbols specified."
+                //"Error in string literal [{0}]: No start/end symbols specified."
+                grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrInvStrDef, Name);
                 return;
             }
             //collect all start-end symbols in lists and create strings of first chars
@@ -110,13 +111,10 @@ namespace Irony.Parsing {
                 }
 
                 allStartSymbols.Add(subType.Start);
-                _startSymbolsFirsts += subType.Start[0].ToString();
+                _startSymbolsFirsts.Add(subType.Start[0]);
                 if ((subType.Flags & StringOptions.IsTemplate) != 0) {
                     isTemplate = true;
                 }
-            }
-            if (!CaseSensitivePrefixesSuffixes) {
-                _startSymbolsFirsts = _startSymbolsFirsts.ToLower() + _startSymbolsFirsts.ToUpper();
             }
 
             //Set multiline flag
@@ -129,11 +127,14 @@ namespace Irony.Parsing {
                 //Check that template settings object is provided
                 var templateSettings = AstConfig.Data as StringTemplateSettings;
                 if (templateSettings == null) {
-                    grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrTemplNoSettings, Name); //"Error in string literal [{0}]: IsTemplate flag is set, but TemplateSettings is not provided."
+                    //"Error in string literal [{0}]: IsTemplate flag is set, but TemplateSettings is not provided."
+                    grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrTemplNoSettings, Name);
                 } else if (templateSettings.ExpressionRoot == null) {
-                    grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrTemplMissingExprRoot, Name); //""
+                    //""
+                    grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrTemplMissingExprRoot, Name);
                 } else if (!Grammar.SnippetRoots.Contains(templateSettings.ExpressionRoot)) {
-                    grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrTemplExprNotRoot, Name); //""
+                    //""
+                    grammarData.Language.Errors.Add(GrammarErrorLevel.Error, null, Resources.ErrTemplExprNotRoot, Name);
                 }
             }
 
@@ -266,7 +267,7 @@ namespace Irony.Parsing {
         }
 
         private bool ReadStartSymbol(ISourceStream source, CompoundTokenDetails details) {
-            if (_startSymbolsFirsts.IndexOf(source.PreviewChar) < 0) {
+            if (!_startSymbolsFirsts.Contains(source.PreviewChar)) {
                 return false;
             }
 
@@ -321,7 +322,7 @@ namespace Irony.Parsing {
 
             //Check for doubled end symbol
             var endSymbol = details.EndSymbol;
-            if (details.IsSet((short)StringOptions.AllowsDoubledQuote) && value.IndexOf(endSymbol) >= 0) {
+            if (details.IsSet((short)StringOptions.AllowsDoubledQuote) && value.IndexOf(endSymbol, StringComparison.InvariantCulture) >= 0) {
                 value = value.Replace(endSymbol + endSymbol, endSymbol);
             }
 
@@ -417,7 +418,7 @@ namespace Irony.Parsing {
 
         private readonly StringSubTypeList _subtypes = new StringSubTypeList();
         //first chars  of start-end symbols
-        private string _startSymbolsFirsts;
+        private CharHashSet _startSymbolsFirsts;
 
     }
 

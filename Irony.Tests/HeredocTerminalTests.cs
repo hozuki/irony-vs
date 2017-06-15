@@ -67,6 +67,18 @@ test
 BEGIN");
             Assert.IsNotNull(token, "Failed to produce a token on valid string.");
             Assert.IsNotNull(token.Value, "Token Value field is null - should be string.");
+            Assert.IsTrue((string)token.Value == Environment.NewLine + "test", "Token Value is wrong, got {0} of type {1}", token.Value, token.Value.GetType().ToString());
+        }
+
+        [TestMethod]
+        public void TestHereDocStripBeginningLiteral() {
+            var term = new HereDocTerminal("Heredoc", "<<-", HereDocOptions.RemoveBeginningNewLine);
+            var parser = TestHelper.CreateParser(term);
+            var token = parser.ParseInput(@"<<-BEGIN
+test
+BEGIN");
+            Assert.IsNotNull(token, "Failed to produce a token on valid string.");
+            Assert.IsNotNull(token.Value, "Token Value field is null - should be string.");
             Assert.IsTrue((string)token.Value == "test", "Token Value is wrong, got {0} of type {1}", token.Value, token.Value.GetType().ToString());
         }
 

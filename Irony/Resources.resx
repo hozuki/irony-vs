@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -394,7 +395,7 @@
     <value>Invalid operation, attempt to assign to a constant or literal value.</value>
   </data>
   <data name="ErrTemplNoSettings" xml:space="preserve">
-    <value>Error in string literal [{0}]: IsTemplate flag is set, but TemplateSettings is not provided in AstNodeConfig property.</value>
+    <value>Error in string/heredoc literal [{0}]: IsTemplate flag is set, but TemplateSettings is not provided in AstNodeConfig property.</value>
   </data>
   <data name="ErrDupStartSymbolStr" xml:space="preserve">
     <value>Duplicate start symbol {0} in string literal [{1}].</value>
@@ -452,5 +453,14 @@
   </data>
   <data name="ErrParserUnexpectedInput" xml:space="preserve">
     <value>Syntax error, unexpected input.</value>
+  </data>
+  <data name="ErrInvHereDocDef" xml:space="preserve">
+    <value>Error in heredoc literal [{0}]: No start/end symbols specified.</value>
+  </data>
+  <data name="ErrDupStartSymbolHereDoc" xml:space="preserve">
+    <value>Duplicate start symbol {0} in heredoc literal [{1}].</value>
+  </data>
+  <data name="ErrInvHereDocEndLiteral" xml:space="preserve">
+    <value>Error in heredoc: malformed end literal {0} for heredoc terminal [{1}].</value>
   </data>
 </root>

@@ -223,6 +223,15 @@ namespace Irony {
         }
         
         /// <summary>
+        ///   查找类似 Duplicate start symbol {0} in heredoc literal [{1}]. 的本地化字符串。
+        /// </summary>
+        internal static string ErrDupStartSymbolHereDoc {
+            get {
+                return ResourceManager.GetString("ErrDupStartSymbolHereDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Duplicate start symbol {0} in string literal [{1}]. 的本地化字符串。
         /// </summary>
         internal static string ErrDupStartSymbolStr {
@@ -345,6 +354,24 @@ namespace Irony {
         internal static string ErrInvEscSymbol {
             get {
                 return ResourceManager.GetString("ErrInvEscSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Error in heredoc literal [{0}]: No start/end symbols specified. 的本地化字符串。
+        /// </summary>
+        internal static string ErrInvHereDocDef {
+            get {
+                return ResourceManager.GetString("ErrInvHereDocDef", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Error in heredoc: malformed end literal {0} for heredoc terminal [{1}]. 的本地化字符串。
+        /// </summary>
+        internal static string ErrInvHereDocEndLiteral {
+            get {
+                return ResourceManager.GetString("ErrInvHereDocEndLiteral", resourceCulture);
             }
         }
         
@@ -655,7 +682,7 @@ namespace Irony {
         }
         
         /// <summary>
-        ///   查找类似 Error in string literal [{0}]: IsTemplate flag is set, but TemplateSettings is not provided in AstNodeConfig property. 的本地化字符串。
+        ///   查找类似 Error in string/heredoc literal [{0}]: IsTemplate flag is set, but TemplateSettings is not provided in AstNodeConfig property. 的本地化字符串。
         /// </summary>
         internal static string ErrTemplNoSettings {
             get {

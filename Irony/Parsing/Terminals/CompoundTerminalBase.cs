@@ -100,6 +100,11 @@ namespace Irony.Parsing {
 
             public byte SubTypeIndex { get; set; } //used for string literal kind
 
+            // Token name. For example used in heredoc: <<LINE_END
+            public string TokenName { get; set; }
+
+            public string TokenQuote { get; set; }
+
             //Flags helper method
             public bool IsSet(short flag) {
                 return (Flags & flag) != 0;

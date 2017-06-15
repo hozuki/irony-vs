@@ -29,7 +29,7 @@ namespace Irony.Tests {
             public string Terminator { get; } = "END";
 
             //Overrides base method, effectively suppressing skipping whitespaces
-            protected override void SkipWhitespace(ISourceStream source) {
+            protected override void SkipWhitespace(ISourceStream source, bool usesNewLineOverride) {
             }
 
         }
