@@ -240,15 +240,11 @@ namespace Irony.Parsing {
 
         protected internal virtual bool IsWhitespace(char ch) {
             switch (ch) {
-                case '(':
-                case ')':
-                case ',':
-                case ';':
-                case '[':
-                case ']':
-                case '{':
-                case '}':
-                case (char)0: //EOF
+                case ' ':
+                case '\t':
+                case '\r':
+                case '\n':
+                case '\v':
                     return true;
                 default:
                     return false;
